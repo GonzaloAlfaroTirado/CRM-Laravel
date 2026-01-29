@@ -8,8 +8,8 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\CategoriaController;
 
 Route::get('/', function () {
-    return redirect()->route('clientes.index');
-});
+    return view('home');
+})->name('home');
 
 Route::resource('clientes', ClienteController::class);
 Route::resource('productos', ProductoController::class);
