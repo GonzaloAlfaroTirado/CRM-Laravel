@@ -15,7 +15,7 @@ return new class extends Migration
         $table->id();
         $table->string('nombre');
         $table->string('email')->unique();
-        $table->string('telefono')->nullable(); // nullable significa que puede estar vacío
+        $table->string('telefono')->nullable();
         $table->string('direccion')->nullable();
         $table->timestamps();
     });

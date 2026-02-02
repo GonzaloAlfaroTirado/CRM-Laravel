@@ -22,29 +22,41 @@ class EmpleadoController extends Controller
     {
         $request->validate([
             'nombre' => 'required',
+            'email' => 'required|email|unique:empleados,email',
+            'cargo' => 'nullable',
+            'departamento' => 'nullable'
         ]);
 
         Empleado::create($request->all());
-        return redirect()->route('empleados.index');
+
+        return redirect()->route('empleados.index')->with('success', 'Empleado registrado correctamente.');
     }
 
-    public function edit($id)
+    public function show(Empleado $empleado)
     {
-        $empleado = Empleado::find($id);
+        return view('empleados.show', compact('empleado'));
+    }
+
+    public function edit(Empleado $empleado)
+    {
         return view('empleados.edit', compact('empleado'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Empleado $empleado)
     {
-        $empleado = Empleado::find($id);
+        $request->validate([
+            'nombre' => 'required',
+            'email' => 'required|email|unique:empleados,email,' . $empleado->id,
+        ]);
+
         $empleado->update($request->all());
-        return redirect()->route('empleados.index');
+
+        return redirect()->route('empleados.index')->with('success', 'Datos del empleado actualizados.');
     }
 
-    public function destroy($id)
+    public function destroy(Empleado $empleado)
     {
-        $empleado = Empleado::find($id);
         $empleado->delete();
-        return redirect()->route('empleados.index');
+        return redirect()->route('empleados.index')->with('success', 'Empleado eliminado del sistema.');
     }
 }

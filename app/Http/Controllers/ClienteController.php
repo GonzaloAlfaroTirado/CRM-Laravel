@@ -22,29 +22,39 @@ class ClienteController extends Controller
     {
         $request->validate([
             'nombre' => 'required',
+            'email' => 'required|email',
         ]);
 
         Cliente::create($request->all());
-        return redirect()->route('clientes.index');
+
+        return redirect()->route('clientes.index')->with('success', 'Cliente creado con éxito.');
     }
 
-    public function edit($id)
+    public function show(Cliente $cliente)
     {
-        $cliente = Cliente::find($id);
+        return view('clientes.show', compact('cliente'));
+    }
+
+    public function edit(Cliente $cliente)
+    {
         return view('clientes.edit', compact('cliente'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Cliente $cliente)
     {
-        $cliente = Cliente::find($id);
+        $request->validate([
+            'nombre' => 'required',
+            'email' => 'required|email',
+        ]);
+
         $cliente->update($request->all());
-        return redirect()->route('clientes.index');
+
+        return redirect()->route('clientes.index')->with('success', 'Cliente actualizado.');
     }
 
-    public function destroy($id)
+    public function destroy(Cliente $cliente)
     {
-        $cliente = Cliente::find($id);
         $cliente->delete();
-        return redirect()->route('clientes.index');
+        return redirect()->route('clientes.index')->with('success', 'Cliente eliminado.');
     }
 }

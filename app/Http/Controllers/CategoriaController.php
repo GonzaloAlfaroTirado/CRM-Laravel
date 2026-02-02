@@ -20,31 +20,35 @@ class CategoriaController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required',
-        ]);
-
+        $request->validate(['nombre' => 'required']);
+        
         Categoria::create($request->all());
-        return redirect()->route('categorias.index');
+        
+        return redirect()->route('categorias.index')->with('success', 'Categoría creada.');
     }
 
-    public function edit($id)
+    public function show(Categoria $categoria)
     {
-        $categoria = Categoria::find($id);
+        return view('categorias.show', compact('categoria'));
+    }
+
+    public function edit(Categoria $categoria)
+    {
         return view('categorias.edit', compact('categoria'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Categoria $categoria)
     {
-        $categoria = Categoria::find($id);
+        $request->validate(['nombre' => 'required']);
+        
         $categoria->update($request->all());
-        return redirect()->route('categorias.index');
+        
+        return redirect()->route('categorias.index')->with('success', 'Categoría actualizada.');
     }
 
-    public function destroy($id)
+    public function destroy(Categoria $categoria)
     {
-        $categoria = Categoria::find($id);
         $categoria->delete();
-        return redirect()->route('categorias.index');
+        return redirect()->route('categorias.index')->with('success', 'Categoría eliminada.');
     }
 }

@@ -14,8 +14,7 @@ return new class extends Migration
     Schema::create('empleados', function (Blueprint $table) {
         $table->id();
         $table->string('nombre');
-        $table->string('puesto');
-        $table->decimal('salario', 10, 2);
+        $table->string('cargo');
         $table->timestamps();
     });
     }

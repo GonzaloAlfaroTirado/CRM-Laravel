@@ -21,30 +21,44 @@ class ProveedorController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required',
+            'nombre_empresa' => 'required',
+            'contacto_nombre' => 'required',
+            'email' => 'required|email',
         ]);
 
         Proveedor::create($request->all());
-        return redirect()->route('proveedores.index');
+
+        return redirect()->route('proveedores.index')->with('success', 'Proveedor creado.');
+    }
+
+    public function show(Proveedor $proveedor)
+    {
+        return view('proveedores.show', compact('proveedor'));
     }
 
     public function edit($id)
     {
-        $proveedor = Proveedor::find($id);
+        $proveedor = \App\Models\Proveedor::findOrFail($id);
+
         return view('proveedores.edit', compact('proveedor'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Proveedor $proveedor)
     {
-        $proveedor = Proveedor::find($id);
+        $request->validate([
+            'nombre_empresa' => 'required',
+            'contacto_nombre' => 'required',
+            'email' => 'required|email',
+        ]);
+
         $proveedor->update($request->all());
-        return redirect()->route('proveedores.index');
+
+        return redirect()->route('proveedores.index')->with('success', 'Proveedor actualizado correctamente.');
     }
 
-    public function destroy($id)
+    public function destroy(Proveedor $proveedor)
     {
-        $proveedor = Proveedor::find($id);
         $proveedor->delete();
-        return redirect()->route('proveedores.index');
+        return redirect()->route('proveedores.index')->with('success', 'Proveedor eliminado.');
     }
 }
